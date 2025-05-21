@@ -531,7 +531,7 @@ subrepo:init() {
 
   o "Commit new subrepo to the '$original_head_branch' branch."
   subrepo_commit_ref=$original_head_commit
-  RUN git commit -m "$(get-commit-message)"
+  RUN git commit -m "$(get-commit-message)" --no-verify
 
   o "Create ref '$refs_subrepo_commit'."
   git:make-ref "$refs_subrepo_commit" "$subrepo_commit_ref"
@@ -713,7 +713,7 @@ subrepo:push() {
   if [[ $commit_msg_file ]]; then
     RUN git command --file "$commit_msg_file"
   else
-    RUN git commit -m "$commit_message"
+    RUN git commit -m "$commit_message" --no-verify
   fi
 }
 
@@ -922,9 +922,9 @@ subrepo:commit() {
   o "Commit to the '$original_head_branch' branch."
   if [[ $original_head_commit != none ]]; then
     if [[ $commit_msg_file ]]; then
-      RUN git commit $edit_flag --file "$commit_msg_file"
+      RUN git commit $edit_flag --file "$commit_msg_file" --no-verify
     else
-      RUN git commit $edit_flag -m "$commit_message"
+      RUN git commit $edit_flag -m "$commit_message" --no-verify
     fi
   else
     # We had cloned into an empty repo, side effect of prior git reset --mixed
